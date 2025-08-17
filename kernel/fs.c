@@ -400,12 +400,12 @@ bmap(struct inode *ip, uint bn)
     brelse(bp);
     return addr;
   }
-  // 二级索引
+  //
   bn -= NINDIRECT;
   if(bn < NDINDIRECT) {
     if((addr = ip->addrs[NDIRECT+1]) == 0)
       ip->addrs[NDIRECT+1] = addr = balloc(ip->dev);
-    // 通过一级索引，找到下一级索引
+    // 
     bp = bread(ip->dev, addr);
     a = (uint*)bp->data;
     if((addr = a[bn/NINDIRECT]) == 0) {
@@ -413,7 +413,7 @@ bmap(struct inode *ip, uint bn)
       log_write(bp);
     }
     brelse(bp);
-    // 重复上面的代码，实现二级索引
+    //
 	bp = bread(ip->dev, addr);
     a = (uint*)bp->data;
     if ((addr = a[bn%NINDIRECT]) == 0) {
